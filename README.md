@@ -7,7 +7,7 @@
 ## Installation
 
 ```sh
-ya pkg add yazi-rs/plugins:smart-enter
+ya pkg add alterkeyy/smart-enter.yazi
 ```
 
 ## Usage
@@ -33,6 +33,12 @@ require("smart-enter"):setup {
 	open_multi = true,
 }
 ```
+
+## Credits
+
+This plugin is a fork and enhancement of:
+- [yazi-rs/plugins (smart-enter)](https://github.com/yazi-rs/plugins/tree/main/smart-enter.yazi)
+- [ourongxing/fast-enter.yazi](https://github.com/ourongxing/fast-enter.yazi)
 
 ## License
 
