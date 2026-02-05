@@ -7,7 +7,7 @@
 ## Installation
 
 ```sh
-ya pkg add alterkeyy/smart-enter.yazi
+ya pkg add alterkeyy/smart-enter
 ```
 
 ## Usage
