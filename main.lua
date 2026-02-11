@@ -6,28 +6,25 @@ local function setup(self, opts) self.open_multi = opts.open_multi end
 local function entry(self)
 	local h = cx.active.current.hovered
 	if h and h.cha.is_dir then
-		local path = tostring(h.url)
+		local url = h.url
 		while true do
-			local p = io.popen("ls -l " .. ya.quote(path), "r")
-			if not p then break end
-
-			local num, flag = -1, false
-			for line in p:lines() do
-				num = num + 1
-				if num == 1 and line:sub(1, 1) == "d" then flag = true end
+			local output, err = Command("ls"):args({ "-1p", tostring(url) }):stdout(Command.PIPED):stderr(Command.PIPED):output()
+			if not output or not output.status.success then
+				break
 			end
-			p:close()
 
-			if num ~= 1 or not flag then break end
+			local lines = {}
+			for line in output.stdout:gmatch("[^\r\n]+") do
+				lines[#lines + 1] = line
+			end
 
-			local dirs = io.popen("ls " .. ya.quote(path), "r")
-			if not dirs then break end
-			local name = dirs:read("*l")
-			dirs:close()
-			if not name then break end
-			path = path .. "/" .. name
+			if #lines ~= 1 or lines[1]:sub(-1) ~= "/" then
+				break
+			end
+
+			url = url / lines[1]:sub(1, -2)
 		end
-		return ya.emit("cd", { path })
+		return ya.emit("cd", { tostring(url) })
 	end
 
 	ya.emit("open", { hovered = not self.open_multi })
